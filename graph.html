@@ -30,9 +30,10 @@ h1{font-size:22px;letter-spacing:-0.02em;margin:2px 0 18px}
 .nm{font-size:14px;line-height:1.35}
 .nm small{display:block;color:var(--muted);font-size:12px}
 .track{position:relative;height:24px}
-.bar{height:100%;border-radius:5px;background:var(--bar);width:0;transition:width .7s cubic-bezier(.2,.8,.2,1);display:flex;justify-content:flex-end}
-.bar.top{background:var(--accent)}
-.bar i{display:block;height:100%;background:var(--ship);border-radius:0 5px 5px 0}
+/* 막대 색은 background-color 대신 그라데이션 이미지로 칠해요. 어두운 화면 확장 프로그램이 배경색을 덮어도 막대가 보이게 하려는 거예요. */
+.bar{height:100%;border-radius:5px;background-image:linear-gradient(var(--bar),var(--bar));width:0;transition:width .7s cubic-bezier(.2,.8,.2,1);display:flex;justify-content:flex-end}
+.bar.top{background-image:linear-gradient(var(--accent),var(--accent))}
+.bar i{display:block;height:100%;background-image:linear-gradient(var(--ship),var(--ship));border-radius:0 5px 5px 0}
 .val{position:absolute;top:50%;transform:translateY(-50%);margin-left:8px;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
 .note{font-size:13px;color:var(--muted);margin-top:16px;line-height:1.65}
 .foot{font-size:12px;color:var(--muted);margin-top:26px;padding-top:14px;border-top:1px solid var(--line);line-height:1.65}
