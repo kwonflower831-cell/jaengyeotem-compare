@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>쟁여템 단가 비교 그래프</title>
+<style>
+:root{
+  --bg:#ffffff; --fg:#14171f; --muted:#667085; --line:#e4e7ec; --chip:#eef0f4; --chip-on:#ffffff;
+  --accent:#0a8fd0; --bar:#b7dcf0; --ship:#e8932b; --radius:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#12161f; --fg:#f5f7fa; --muted:#98a2b3; --line:#2a303d; --chip:#222836; --chip-on:#2f3748; --accent:#38bdf8; --bar:#2c5a74; --ship:#fbbf6a; }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+main{max-width:760px;margin:0 auto;padding:28px 20px 40px}
+.kicker{font-size:12px;color:var(--muted)}
+h1{font-size:22px;letter-spacing:-0.02em;margin:2px 0 18px}
+.tabs{display:flex;gap:4px;padding:3px;background:var(--chip);border-radius:var(--radius);width:fit-content;max-width:100%;flex-wrap:wrap;margin-bottom:22px}
+.tab{border:0;background:transparent;color:var(--muted);font:inherit;font-size:14px;padding:8px 16px;border-radius:calc(var(--radius) - 3px);cursor:pointer}
+.tab.on{background:var(--chip-on);color:var(--fg);font-weight:700}
+.big{font-size:26px;font-weight:700;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.sub{font-size:13px;color:var(--muted);margin-top:2px}
+.sw{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);margin:12px 0 2px}
+.sw button{border:1px solid var(--line);background:transparent;color:var(--fg);font:inherit;font-size:13px;padding:4px 12px;border-radius:999px;cursor:pointer}
+.sw button.on{background:var(--chip);font-weight:700}
+.row{display:grid;grid-template-columns:minmax(104px,150px) minmax(0,1fr);gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.nm{font-size:14px;line-height:1.35}
+.nm small{display:block;color:var(--muted);font-size:12px}
+.track{position:relative;height:24px}
+.bar{height:100%;border-radius:5px;background:var(--bar);width:0;transition:width .7s cubic-bezier(.2,.8,.2,1);display:flex;justify-content:flex-end}
+.bar.top{background:var(--accent)}
+.bar i{display:block;height:100%;background:var(--ship);border-radius:0 5px 5px 0}
+.val{position:absolute;top:50%;transform:translateY(-50%);margin-left:8px;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.note{font-size:13px;color:var(--muted);margin-top:16px;line-height:1.65}
+.foot{font-size:12px;color:var(--muted);margin-top:26px;padding-top:14px;border-top:1px solid var(--line);line-height:1.65}
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">쟁여템 가격비교</div>
+  <h1>같은 양 기준으로 줄 세워 봤어요</h1>
+  <div class="tabs" id="tabs"></div>
+  <div class="big" id="big"></div>
+  <div class="sub" id="basis"></div>
+  <div class="sw" id="sw" style="display:none"><span>배송비</span><button data-s="0">빼고</button><button data-s="1">더해서</button></div>
+  <div id="rows"></div>
+  <div class="note" id="note"></div>
+  <div class="foot">값은 2026.10.27 오전에 쿠팡과 네이버 상품 페이지에서 직접 확인했어요. 가격과 할인은 수시로 바뀌니 판매 페이지에서 현재가를 확인하세요. 내가 비교한 5종 안에서의 순서이고, 맛이나 품질은 비교하지 않았어요.</div>
+</main>
+<script>
+var D=[
+{k:'탄산음료',unit:'100ml당',title:'190ml 캔 30개, 5종',fmt:function(v){return Math.round(v)+'원'},
+ items:[['천연사이다','10,900원',10900/57,0],['칠성사이다','12,900원 (쿠폰가)',12900/57,0],['스프라이트 사이다','14,880원 (와우)',14880/57,0],['환타 오렌지','14,900원 (와우)',14900/57,0],['코카콜라 오리지널','16,850원 (와우)',16850/57,0]],
+ head:function(a){return a[0][0]+' 약 '+Math.round(a[0][2])+'원'},
+ note:'스프라이트와 환타는 할인 전 표시가 19,300원으로 계산하면 100ml당 약 339원이라 순서가 달라져요. 와우는 와우회원으로 본 표시가이고, 와우회원이 아니면 다를 수 있어요.'},
+{k:'포기김치',unit:'1kg당',title:'2kg와 3kg 상품, 5종',fmt:function(v){return Math.round(v).toLocaleString('ko-KR')+'원'},ship:true,
+ items:[['참가득 3kg','22,000원',22000/3,3000/3],['옥돌김치 3kg','23,900원',23900/3,0],['운림가 2kg','16,500원',16500/2,3000/2],['더 테이블 2kg','17,900원',17900/2,0],['비비고 해남재 2kg','23,900원',23900/2,0]],
+ head:function(a){return a[0][0].split(' ')[0]+' 약 '+Math.round(a[0][2]).toLocaleString('ko-KR')+'원'},
+ note:'참가득과 운림가는 배송비 3,000원이 따로 있어요(주황색). 더하면 순서가 바뀌어요. 쿠폰은 계산에 넣지 않았어요.'},
+{k:'니트릴 장갑',unit:'1장당',title:'중간 크기(M) 100개입, 5종',fmt:function(v){return v.toFixed(1)+'원'},
+ items:[['코멧 화이트','6,990원',69.9,0],['핸즈핏 검정','7,500원',75.0,0],['탐사 퍼플','7,640원',76.4,0],['더블세이프 연보라','7,650원',76.5,0],['브릭글로 블랙','10,300원',103,0]],
+ head:function(a){return a[0][0].split(' ')[0]+' 약 '+a[0][2].toFixed(1)+'원'},
+ note:'탐사와 더블세이프는 1장 값 차이가 0.1원뿐이에요. 가격은 와우회원으로 본 표시가이고, 핸즈핏, 더블세이프, 브릭글로는 다른 판매자도 같은 상품을 팔아서 가격이 다를 수 있어요.'}
+];
+var cur=0,withShip=0;
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
+function draw(){
+ var d=D[cur];
+ var arr=d.items.map(function(x){return [x[0],x[1],x[2]+(d.ship&&withShip?x[3]:0),x[3]]}).sort(function(a,b){return a[2]-b[2]});
+ document.getElementById('big').textContent=d.head(arr);
+ document.getElementById('basis').textContent=d.title+' · '+d.unit+(d.ship&&withShip?' · 배송비 포함':'')+' · 2026.10.27 기준';
+ document.getElementById('sw').style.display=d.ship?'flex':'none';
+ var max=Math.max.apply(null,arr.map(function(x){return x[2]}))*1.6;
+ document.getElementById('rows').innerHTML=arr.map(function(x,i){
+  var shipPart=(d.ship&&withShip&&x[3])?'<i style="width:'+(x[3]/x[2]*100)+'%"></i>':'';
+  return '<div class="row"><div class="nm">'+esc(x[0])+'<small>'+esc(x[1])+(d.ship&&x[3]&&withShip?' + 배송비 3,000원':'')+'</small></div><div class="track"><div class="bar'+(i==0?' top':'')+'" data-w="'+(x[2]/max*100)+'">'+shipPart+'</div><span class="val" data-w="'+(x[2]/max*100)+'">'+d.fmt(x[2])+'</span></div></div>';
+ }).join('');
+ requestAnimationFrame(function(){requestAnimationFrame(function(){
+  document.querySelectorAll('.bar').forEach(function(b){b.style.width=b.dataset.w+'%'});
+  document.querySelectorAll('.val').forEach(function(v){v.style.left=v.dataset.w+'%'});
+ })});
+ document.getElementById('note').textContent='비교한 5종 중 순서예요. '+d.note;
+ document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('on',i==cur)});
+ document.querySelectorAll('#sw button').forEach(function(b){b.classList.toggle('on',+b.dataset.s==withShip)});
+}
+document.getElementById('tabs').innerHTML=D.map(function(d,i){return '<button class="tab" data-i="'+i+'">'+d.k+'</button>'}).join('');
+document.getElementById('tabs').onclick=function(e){var i=e.target.dataset.i;if(i!=null){cur=+i;withShip=0;draw()}};
+document.getElementById('sw').onclick=function(e){var s=e.target.dataset.s;if(s!=null){withShip=+s;draw()}};
+draw();
+</script>
+</body>
+</html>
