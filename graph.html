@@ -18,9 +18,9 @@ body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,
 main{max-width:760px;margin:0 auto;padding:28px 20px 40px}
 .kicker{font-size:12px;color:var(--muted)}
 h1{font-size:22px;letter-spacing:-0.02em;margin:2px 0 18px}
-.tabs{display:flex;gap:4px;padding:3px;background:var(--chip);border-radius:var(--radius);width:fit-content;max-width:100%;flex-wrap:wrap;margin-bottom:22px}
-.tab{border:0;background:transparent;color:var(--muted);font:inherit;font-size:14px;padding:8px 16px;border-radius:calc(var(--radius) - 3px);cursor:pointer}
-.tab.on{background:var(--chip-on);color:var(--fg);font-weight:700}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.tab{border:2px solid var(--accent);background:var(--chip);color:var(--fg);font:inherit;font-size:15px;padding:11px 18px;border-radius:12px;cursor:pointer;box-shadow:0 3px 0 var(--accent)}.tab:active{transform:translateY(2px);box-shadow:0 1px 0 var(--accent)}.tab:hover{border-color:var(--accent)}.tab .mk{color:var(--accent);margin-right:5px}.hint{font-size:13px;color:var(--accent);margin:0 0 8px;font-weight:600}
+.tab.on{background:var(--accent);color:#06222f;font-weight:700}.tab.on .mk{color:#06222f}
 .big{font-size:26px;font-weight:700;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
 .sub{font-size:13px;color:var(--muted);margin-top:2px}
 .sw{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);margin:12px 0 2px}
@@ -46,6 +46,7 @@ h1{font-size:22px;letter-spacing:-0.02em;margin:2px 0 18px}
 <main>
   <div class="kicker">쟁여템 가격비교</div>
   <h1>같은 양 기준으로 줄 세워 봤어요</h1>
+  <div class="hint">▼ 아래 버튼 3개를 눌러서 종류를 바꿔 보세요</div>
   <div class="tabs" id="tabs"></div>
   <div class="big" id="big"></div>
   <div class="sub" id="basis"></div>
@@ -88,11 +89,12 @@ function draw(){
   document.querySelectorAll('.val').forEach(function(v){v.style.left=v.dataset.w+'%'});
  })});
  document.getElementById('note').textContent='비교한 5종 중 순서예요. '+d.note;
- document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('on',i==cur)});
+ document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('on',i==cur);t.innerHTML='<span class="mk">'+(i==cur?'●':'▶')+'</span>'+esc(D[i].k)+(i==cur?' (보는 중)':' 보기')});
  document.querySelectorAll('#sw button').forEach(function(b){b.classList.toggle('on',+b.dataset.s==withShip)});
 }
 document.getElementById('tabs').innerHTML=D.map(function(d,i){return '<button class="tab" data-i="'+i+'">'+d.k+'</button>'}).join('');
-document.getElementById('tabs').onclick=function(e){var i=e.target.dataset.i;if(i!=null){cur=+i;withShip=0;draw()}};
+document.getElementById('tabs').onclick=function(e){var b=e.target.closest('.tab');if(b){cur=+b.dataset.i;withShip=0;draw()}};
+
 document.getElementById('sw').onclick=function(e){var s=e.target.dataset.s;if(s!=null){withShip=+s;draw()}};
 draw();
 </script>
