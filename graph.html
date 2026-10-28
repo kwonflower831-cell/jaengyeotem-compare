@@ -3,7 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>쟁여템 단가 비교 그래프</title>
+<title>오늘의 쟁여템 단가 그래프 (2026.10.29)</title>
+<meta property="og:title" content="오늘의 쟁여템 단가 그래프 (2026.10.29)">
+<meta property="og:description" content="같은 양 기준으로 줄 세운 오늘의 비교 3종. 버튼을 눌러 종류를 바꿔 보세요.">
+<meta name="description" content="같은 양 기준으로 줄 세운 오늘의 비교 3종">
 <style>
 :root{
   --bg:#ffffff; --fg:#14171f; --muted:#667085; --line:#e4e7ec; --chip:#eef0f4; --chip-on:#ffffff;
@@ -46,38 +49,29 @@ h1{font-size:22px;letter-spacing:-0.02em;margin:2px 0 18px}
 <main>
   <div class="kicker"><a href="index.html" style="color:inherit">← 쟁여템 가격비교 처음으로</a></div>
   <h1>같은 양 기준으로 줄 세워 봤어요</h1>
-  <div class="hint" id="hint"></div>
+  <div class="hint">▼ 아래 버튼 3개를 눌러서 종류를 바꿔 보세요</div>
   <div class="tabs" id="tabs"></div>
   <div class="big" id="big"></div>
   <div class="sub" id="basis"></div>
   <div class="sw" id="sw" style="display:none"><span>배송비</span><button data-s="0">빼고</button><button data-s="1">더해서</button></div>
   <div id="rows"></div>
   <div class="note" id="note"></div>
-  <div class="foot" id="foot"></div>
+  <div class="foot">값은 2026.10.29 오전에 쿠팡과 네이버 상품 페이지에서 직접 확인했어요. 가격과 할인은 수시로 바뀌니 판매 페이지에서 현재가를 확인하세요. 내가 비교한 5종 안에서의 순서이고, 맛이나 품질은 비교하지 않았어요.</div>
 </main>
 <script>
-/* 새 그래프 추가법: 아래 목록 맨 앞에 항목 하나를 넣으면 버튼이 자동으로 생겨요. date는 가격을 확인한 날짜예요. */
-var D=[
-{k:'탄산음료',date:'2026.10.27',unit:'100ml당',title:'190ml 캔 30개, 5종',fmt:function(v){return Math.round(v)+'원'},
- items:[['천연사이다','10,900원',10900/57,0],['칠성사이다','12,900원 (쿠폰가)',12900/57,0],['스프라이트 사이다','14,880원 (와우)',14880/57,0],['환타 오렌지','14,900원 (와우)',14900/57,0],['코카콜라 오리지널','16,850원 (와우)',16850/57,0]],
- head:function(a){return a[0][0]+' 약 '+Math.round(a[0][2])+'원'},
- note:'스프라이트와 환타는 할인 전 표시가 19,300원으로 계산하면 100ml당 약 339원이라 순서가 달라져요. 와우는 와우회원으로 본 표시가이고, 와우회원이 아니면 다를 수 있어요.'},
-{k:'포기김치',date:'2026.10.27',unit:'1kg당',title:'2kg와 3kg 상품, 5종',fmt:function(v){return Math.round(v).toLocaleString('ko-KR')+'원'},ship:true,
- items:[['참가득 3kg','22,000원',22000/3,3000/3],['옥돌김치 3kg','23,900원',23900/3,0],['운림가 2kg','16,500원',16500/2,3000/2],['더 테이블 2kg','17,900원',17900/2,0],['비비고 해남재 2kg','23,900원',23900/2,0]],
- head:function(a){return a[0][0].split(' ')[0]+' 약 '+Math.round(a[0][2]).toLocaleString('ko-KR')+'원'},
- note:'참가득과 운림가는 배송비 3,000원이 따로 있어요(주황색). 더하면 순서가 바뀌어요. 쿠폰은 계산에 넣지 않았어요.'},
-{k:'니트릴 장갑',date:'2026.10.27',unit:'1장당',title:'중간 크기(M) 100개입, 5종',fmt:function(v){return v.toFixed(1)+'원'},
- items:[['코멧 화이트','6,990원',69.9,0],['핸즈핏 검정','7,500원',75.0,0],['탐사 퍼플','7,640원',76.4,0],['더블세이프 연보라','7,650원',76.5,0],['브릭글로 블랙','10,300원',103,0]],
- head:function(a){return a[0][0].split(' ')[0]+' 약 '+a[0][2].toFixed(1)+'원'},
- note:'탐사와 더블세이프는 1장 값 차이가 0.1원뿐이에요. 가격은 와우회원으로 본 표시가이고, 핸즈핏, 더블세이프, 브릭글로는 다른 판매자도 같은 상품을 팔아서 가격이 다를 수 있어요.'}
-];
+var META={"date": "2026.10.29", "cats": [{"k": "물걸레 청소포", "platform": "cp", "unit": "1장당", "title": "총 60~300매 상품, 5종", "fmt": "won1", "ship": false, "rows": [{"name": "코멧 300매", "sub": "10,490원 (와우)", "v": 34.96666666666667}, {"name": "탐사 300매", "sub": "11,490원 (와우)", "v": 38.3}, {"name": "케이크린업 300매", "sub": "17,160원 (와우)", "v": 57.2}, {"name": "기본에 150매", "sub": "12,830원 (와우)", "v": 85.53333333333333}, {"name": "스카치브라이트 60매", "sub": "10,800원 (쿠폰가)", "v": 180}], "note": "가격은 와우회원으로 본 표시가이고, 스카치브라이트는 쿠폰 1,080원이 적용된 값이에요. 총 매수가 상품마다 달라요."}, {"k": "사골곰탕", "platform": "nv", "unit": "100g당", "title": "총 500g~6,300g 상품, 5종", "fmt": "won0", "ship": true, "rows": [{"name": "삼형제고기 2kg", "sub": "8,900원 + 배송비 3,500원", "v": 445, "extra": 175}, {"name": "오뚜기 6.3kg", "sub": "28,900원 (배송비 무료)", "v": 458.7301587301587}, {"name": "아리향 3kg", "sub": "25,900원 (배송비 무료)", "v": 863.3333333333333}, {"name": "우정옥 1kg", "sub": "14,900원 + 배송비 3,000원", "v": 1490, "extra": 300}, {"name": "옥순할매곰집 500g", "sub": "7,500원 + 배송비 4,000원", "v": 1500, "extra": 800}], "note": "쿠폰 받기 전 상품 가격 기준이에요. 배송비가 따로 붙는 상품은 주황색으로 표시했어요."}, {"k": "천일염 소금", "platform": "cp", "unit": "100g당", "title": "굵은 천일염 5kg, 5종", "fmt": "won0", "ship": false, "rows": [{"name": "국내산 신안 명품 5kg", "sub": "11,060원 (와우할인가)", "v": 221.20000000000002}, {"name": "백양인 5kg", "sub": "12,780원 (쿠폰가)", "v": 255.6}, {"name": "자연닮음 5kg", "sub": "12,800원 (와우)", "v": 256}, {"name": "해표 5kg", "sub": "13,100원 (와우)", "v": 262}, {"name": "청정원 5kg", "sub": "18,030원 (와우)", "v": 360.59999999999997}], "note": "가격은 와우회원으로 본 표시가이고, 국내산 신안 명품은 와우할인가, 백양인은 쿠폰 400원 적용가예요."}]};
+var F={won0:function(v){return Math.round(v).toLocaleString('ko-KR')+'원'},won1:function(v){return v.toFixed(1)+'원'}};
+var PL={cp:'쿠팡 상품',nv:'네이버 상품'};
+var D=META.cats.map(function(c){return {k:c.k,unit:c.unit,title:c.title,plat:PL[c.platform]||'',fmt:F[c.fmt]||F.won0,ship:!!c.ship,note:c.note||'',
+ items:c.rows.map(function(r){return [r.name,r.sub,r.v,r.extra||0]}),
+ head:function(a){return a[0][0].split(' ')[0]+' 약 '+(c.fmt=='won1'?a[0][2].toFixed(1):Math.round(a[0][2]).toLocaleString('ko-KR'))+'원'}}});
 var cur=0,withShip=0;
 function esc(s){return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
 function draw(){
  var d=D[cur];
  var arr=d.items.map(function(x){return [x[0],x[1],x[2]+(d.ship&&withShip?x[3]:0),x[3]]}).sort(function(a,b){return a[2]-b[2]});
  document.getElementById('big').textContent=d.head(arr);
- document.getElementById('basis').textContent=d.title+' · '+d.unit+(d.ship&&withShip?' · 배송비 포함':'')+' · '+d.date+' 기준';
+ document.getElementById('basis').textContent=d.title+' · '+d.unit+(d.ship&&withShip?' · 배송비 포함':'')+(d.plat?' · '+d.plat:'')+' · '+META.date+' 기준';
  document.getElementById('sw').style.display=d.ship?'flex':'none';
  var max=Math.max.apply(null,arr.map(function(x){return x[2]}))*1.6;
  document.getElementById('rows').innerHTML=arr.map(function(x,i){
@@ -89,12 +83,10 @@ function draw(){
   document.querySelectorAll('.barsvg rect').forEach(function(b){b.style.width=b.dataset.w+'%'});
   document.querySelectorAll('.val').forEach(function(v){v.style.left=v.dataset.w+'%'});
  })});
- document.getElementById('note').textContent='비교한 '+d.items.length+'종 중 순서예요. '+d.note;
- document.getElementById('foot').textContent='값은 '+d.date+' 쿠팡과 네이버 상품 페이지에서 직접 확인했어요. 가격과 할인은 수시로 바뀌니 판매 페이지에서 현재가를 확인하세요. 내가 비교한 '+d.items.length+'종 안에서의 순서이고, 맛이나 품질은 비교하지 않았어요.';
+ document.getElementById('note').textContent='비교한 5종 중 순서예요. '+d.note;
  document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('on',i==cur);t.innerHTML='<span class="mk">'+(i==cur?'●':'▶')+'</span>'+esc(D[i].k)+(i==cur?' (보는 중)':' 보기')});
  document.querySelectorAll('#sw button').forEach(function(b){b.classList.toggle('on',+b.dataset.s==withShip)});
 }
-document.getElementById('hint').textContent='▼ 아래 버튼 '+D.length+'개를 눌러서 종류를 바꿔 보세요';
 document.getElementById('tabs').innerHTML=D.map(function(d,i){return '<button class="tab" data-i="'+i+'">'+d.k+'</button>'}).join('');
 document.getElementById('tabs').onclick=function(e){var b=e.target.closest('.tab');if(b){cur=+b.dataset.i;withShip=0;draw()}};
 
