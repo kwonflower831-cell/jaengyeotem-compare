@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>오늘의 쟁여템 단가 그래프 (2026.10.30)</title>
+<meta property="og:title" content="오늘의 쟁여템 단가 그래프 (2026.10.30)">
+<meta property="og:description" content="같은 양 기준으로 줄 세운 오늘의 비교 3종. 버튼을 눌러 종류를 바꿔 보세요.">
+<meta name="description" content="같은 양 기준으로 줄 세운 오늘의 비교 3종">
+<style>
+:root{
+  --bg:#ffffff; --fg:#14171f; --muted:#667085; --line:#e4e7ec; --chip:#eef0f4; --chip-on:#ffffff;
+  --accent:#0a8fd0; --bar:#b7dcf0; --ship:#e8932b; --radius:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#12161f; --fg:#f5f7fa; --muted:#98a2b3; --line:#2a303d; --chip:#222836; --chip-on:#2f3748; --accent:#38bdf8; --bar:#2c5a74; --ship:#fbbf6a; }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+main{max-width:760px;margin:0 auto;padding:28px 20px 40px}
+.kicker{font-size:12px;color:var(--muted)}
+h1{font-size:22px;letter-spacing:-0.02em;margin:2px 0 18px}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.tab{border:2px solid var(--accent);background:var(--chip);color:var(--fg);font:inherit;font-size:15px;padding:11px 18px;border-radius:12px;cursor:pointer;box-shadow:0 3px 0 var(--accent)}.tab:active{transform:translateY(2px);box-shadow:0 1px 0 var(--accent)}.tab:hover{border-color:var(--accent)}.tab .mk{color:var(--accent);margin-right:5px}.hint{font-size:13px;color:var(--accent);margin:0 0 8px;font-weight:600}
+.tab.on{background:var(--accent);color:#06222f;font-weight:700}.tab.on .mk{color:#06222f}
+.big{font-size:26px;font-weight:700;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.sub{font-size:13px;color:var(--muted);margin-top:2px}
+.sw{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);margin:12px 0 2px}
+.sw button{border:1px solid var(--line);background:transparent;color:var(--fg);font:inherit;font-size:13px;padding:4px 12px;border-radius:999px;cursor:pointer}
+.sw button.on{background:var(--chip);font-weight:700}
+.row{display:grid;grid-template-columns:minmax(104px,150px) minmax(0,1fr);gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.nm{font-size:14px;line-height:1.35}
+.nm small{display:block;color:var(--muted);font-size:12px}
+.track{position:relative;height:24px}
+.val{z-index:1}
+/* 막대는 SVG로 그려요. 어두운 화면 확장 프로그램이 배경색을 덮어도 막대가 보이게 하려는 거예요. */
+.barsvg{display:block;width:100%;height:24px;overflow:visible}
+.barsvg rect{height:24px;transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.barsvg .b{fill:var(--bar)}
+.barsvg .b.top{fill:var(--accent)}
+.barsvg .sh{fill:var(--ship)}
+.val{position:absolute;top:50%;transform:translateY(-50%);margin-left:8px;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.note{font-size:13px;color:var(--muted);margin-top:16px;line-height:1.65}
+.foot{font-size:12px;color:var(--muted);margin-top:26px;padding-top:14px;border-top:1px solid var(--line);line-height:1.65}
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker"><a href="index.html" style="color:inherit">← 쟁여템 가격비교 처음으로</a></div>
+  <h1>같은 양 기준으로 줄 세워 봤어요</h1>
+  <div class="hint">▼ 아래 버튼 3개를 눌러서 종류를 바꿔 보세요</div>
+  <div class="tabs" id="tabs"></div>
+  <div class="big" id="big"></div>
+  <div class="sub" id="basis"></div>
+  <div class="sw" id="sw" style="display:none"><span>배송비</span><button data-s="0">빼고</button><button data-s="1">더해서</button></div>
+  <p class="sr" id="srsum" role="status" aria-live="polite"></p>
+  <div id="rows"></div>
+  <div class="note" id="note"></div>
+  <div class="foot">값은 2026.10.30 오전에 쿠팡과 네이버 상품 페이지에서 직접 확인했어요. 가격과 할인은 수시로 바뀌니 판매 페이지에서 현재가를 확인하세요. 내가 비교한 상품 안에서의 순서이고, 맛이나 품질은 비교하지 않았어요.</div>
+</main>
+<script>
+var META={"date": "2026.10.30", "cats": [{"k": "핫팩", "platform": "cp", "unit": "1개당", "title": "포켓형 30개입(150g, 160g), 5종", "fmt": "won0", "ship": false, "rows": [{"name": "코멧 150g", "sub": "12,060원", "v": 402}, {"name": "하루온 160g", "sub": "13,360원 (와우할인가)", "v": 445.3333333333333}, {"name": "해피데이 150g", "sub": "15,420원", "v": 514}, {"name": "박상병핫팩 150g", "sub": "17,440원 (배송비 포함 표시)", "v": 581.3333333333334}, {"name": "충성 160g", "sub": "18,000원", "v": 600}], "note": "가격은 와우회원으로 본 표시가이고, 와우회원이 아니면 다를 수 있어요. 박상병핫팩은 옵션 가격 옆에 배송비 포함이라고 표시돼 있어요."}, {"k": "만두", "platform": "nv", "unit": "100g당", "title": "고기만두 3종과 새우홍게살 교자 1종, 4종", "fmt": "won0", "ship": true, "rows": [{"name": "맛의고수 고기만두 2kg", "sub": "15,900원, 배송비 4,000원", "v": 795, "extra": 200}, {"name": "동동국수 고기만두 1kg", "sub": "8,900원, 배송비 3,500원", "v": 890, "extra": 350}, {"name": "보영만두 고기찐만두 1kg", "sub": "14,900원, 배송비 4,000원", "v": 1490, "extra": 400}, {"name": "오뚜기 X.O. 교자 새우홍게살 1,944g", "sub": "34,440원, 배송비 무료", "v": 1771.6049382716049}], "note": "배송비가 따로 붙는 상품은 주황색으로 보여요. 쿠폰은 계산에 넣지 않았고, 오뚜기는 쿠폰을 받으면 29,440원으로 표시돼요."}, {"k": "건조기 시트", "platform": "cp", "unit": "1장당", "title": "한 팩 120~140장, 5종", "fmt": "won1", "ship": false, "rows": [{"name": "올클린 코지코튼 140장", "sub": "9,990원", "v": 71.35714285714286}, {"name": "탐사 퍼퓸 피오니부케 130장", "sub": "10,210원", "v": 78.53846153846153}, {"name": "르샤트라1802 피오니부케 120장", "sub": "10,620원 (와우할인가)", "v": 88.5}, {"name": "피죤 미스틱레인 130장", "sub": "11,900원 (와우할인가)", "v": 91.53846153846153}, {"name": "스너글 허거블코튼 120장", "sub": "14,850원", "v": 123.75}], "note": "가격은 와우회원으로 본 표시가이고, 와우회원이 아니면 다를 수 있어요."}]};
+var F={won0:function(v){return Math.round(v).toLocaleString('ko-KR')+'원'},won1:function(v){return v.toFixed(1)+'원'}};
+var PL={cp:'쿠팡 상품',nv:'네이버 상품'};
+var D=META.cats.map(function(c){return {k:c.k,unit:c.unit,title:c.title,plat:PL[c.platform]||'',fmt:F[c.fmt]||F.won0,ship:!!c.ship,note:c.note||'',
+ items:c.rows.map(function(r){return [r.name,r.sub,r.v,r.extra||0]}),
+ head:function(a){return a[0][0].split(' ')[0]+' 약 '+(c.fmt=='won1'?a[0][2].toFixed(1):Math.round(a[0][2]).toLocaleString('ko-KR'))+'원'}}});
+var cur=0,withShip=0;
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
+function draw(){
+ var d=D[cur];
+ var arr=d.items.map(function(x){return [x[0],x[1],x[2]+(d.ship&&withShip?x[3]:0),x[3]]}).sort(function(a,b){return a[2]-b[2]});
+ document.getElementById('big').textContent=d.head(arr);
+ document.getElementById('basis').textContent=d.title+' · '+d.unit+(d.ship&&withShip?' · 배송비 포함':'')+(d.plat?' · '+d.plat:'')+' · '+META.date+' 기준';
+ document.getElementById('sw').style.display=d.ship?'flex':'none';
+ document.getElementById('srsum').textContent=d.k+' '+d.unit+(d.ship&&withShip?' 배송비 포함':'')+' 순서: '+arr.map(function(x,i){return (i+1)+'번 '+x[0]+' '+d.fmt(x[2])}).join(', ')+'. '+META.date+' 기준이에요.';
+ var max=Math.max.apply(null,arr.map(function(x){return x[2]}))*1.6;
+ document.getElementById('rows').innerHTML=arr.map(function(x,i){
+  var T=x[2]/max*100, sp=(d.ship&&withShip&&x[3])?x[3]/x[2]:0;
+  var svg='<svg class="barsvg" aria-hidden="true"><rect class="b'+(i==0?' top':'')+'" x="0" y="0" rx="5" width="0" data-w="'+T+'"></rect>'+(sp?'<rect class="sh" y="0" rx="0" width="0" data-x="'+(T*(1-sp))+'" data-w="'+(T*sp)+'" x="'+(T*(1-sp))+'%"></rect>':'')+'</svg>';
+  return '<div class="row"><div class="nm">'+esc(x[0])+'<small>'+esc(x[1])+(d.ship&&x[3]&&withShip?' (배송비 더한 값)':'')+'</small></div><div class="track">'+svg+'<span class="val" data-w="'+T+'">'+d.fmt(x[2])+'</span></div></div>';
+ }).join('');
+ requestAnimationFrame(function(){requestAnimationFrame(function(){
+  document.querySelectorAll('.barsvg rect').forEach(function(b){b.style.width=b.dataset.w+'%'});
+  document.querySelectorAll('.val').forEach(function(v){v.style.left=v.dataset.w+'%'});
+ })});
+ document.getElementById('note').textContent='비교한 '+arr.length+'종 중 순서예요. '+d.note;
+ document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('on',i==cur);t.innerHTML='<span class="mk">'+(i==cur?'●':'▶')+'</span>'+esc(D[i].k)+(i==cur?' (보는 중)':' 보기')});
+ document.querySelectorAll('#sw button').forEach(function(b){b.classList.toggle('on',+b.dataset.s==withShip);b.setAttribute('aria-pressed',+b.dataset.s==withShip?'true':'false')});
+}
+document.getElementById('tabs').innerHTML=D.map(function(d,i){return '<button class="tab" data-i="'+i+'">'+d.k+'</button>'}).join('');
+document.getElementById('tabs').onclick=function(e){var b=e.target.closest('.tab');if(b){cur=+b.dataset.i;withShip=0;draw()}};
+
+document.getElementById('sw').onclick=function(e){var s=e.target.dataset.s;if(s!=null){withShip=+s;draw()}};
+draw();
+</script>
+</body>
+</html>
