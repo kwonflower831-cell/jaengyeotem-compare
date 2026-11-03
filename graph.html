@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>오늘의 쟁여템 단가 그래프 (2026.11.1)</title>
-<meta property="og:title" content="오늘의 쟁여템 단가 그래프 (2026.11.1)">
+<title>오늘의 쟁여템 단가 그래프 (2026.11.3)</title>
+<meta property="og:title" content="오늘의 쟁여템 단가 그래프 (2026.11.3)">
 <meta property="og:description" content="같은 양 기준으로 줄 세운 오늘의 비교 2종. 버튼을 눌러 종류를 바꿔 보세요.">
 <meta name="description" content="같은 양 기준으로 줄 세운 오늘의 비교 2종">
 <style>
@@ -58,10 +58,10 @@ h1{font-size:22px;letter-spacing:-0.02em;margin:2px 0 18px}
   <p class="sr" id="srsum" role="status" aria-live="polite"></p>
   <div id="rows"></div>
   <div class="note" id="note"></div>
-  <div class="foot">값은 2026.11.1 오전에 쿠팡과 네이버 상품 페이지에서 직접 확인했어요. 가격과 할인은 수시로 바뀌니 판매 페이지에서 현재가를 확인하세요. 내가 비교한 상품들 안에서의 순서이고, 맛이나 품질은 비교하지 않았어요.</div>
+  <div class="foot">값은 2026.11.3 오전에 쿠팡과 네이버 상품 페이지에서 직접 확인했어요. 가격과 할인은 수시로 바뀌니 판매 페이지에서 현재가를 확인하세요. 내가 비교한 상품들 안에서의 순서이고, 맛이나 품질은 비교하지 않았어요.</div>
 </main>
 <script>
-var META={"date": "2026.11.1", "cats": [{"k": "땅콩버터", "platform": "nv", "unit": "100g당", "title": "250g~1,000g 상품, 4종", "fmt": "won0", "ship": true, "rows": [{"name": "안단잼 500g 2병", "sub": "18,900원", "v": 1889.9999999999998}, {"name": "어썸 피넛 500g", "sub": "13,900원", "v": 2780}, {"name": "슈퍼너츠 460g", "sub": "14,400원, 배송비 3,000원", "v": 3130.4347826086955, "extra": 652.1739130434783}, {"name": "마이노멀 250g", "sub": "10,900원, 배송비 3,000원", "v": 4360, "extra": 1200}], "note": "가격은 상품 가격 기준이고 쿠폰과 정기구독 할인은 넣지 않았어요. 슈퍼너츠와 마이노멀은 배송비 3,000원이 따로 있어요(주황색)."}, {"k": "치약", "platform": "cp", "unit": "100g당", "title": "120g~170g 튜브, 4종", "fmt": "won0", "ship": false, "rows": [{"name": "페리오 후레쉬 알파 170g 10개", "sub": "9,050원 (쿠폰가)", "v": 532.3529411764706}, {"name": "크리오 덴티메이트 150g 6개", "sub": "5,920원 (와우할인가)", "v": 657.7777777777777}, {"name": "2080 퓨어 150g 6개", "sub": "8,380원 (와우할인가)", "v": 931.1111111111112}, {"name": "페리오 토탈7프로 120g 6개", "sub": "11,780원 (쿠폰가)", "v": 1636.111111111111}], "note": "가격은 와우회원으로 본 표시가이고, 쿠폰가와 와우할인가는 조건이 끝나면 달라질 수 있어요."}]};
+var META={"date": "2026.11.3", "cats": [{"k": "면봉", "platform": "cp", "unit": "100개당", "title": "총 400~2,000개 상품, 5종", "fmt": "won0", "ship": false, "rows": [{"name": "코멧 베이직 2,000개", "sub": "4,660원", "v": 233}, {"name": "그린내일 2,000개", "sub": "4,690원", "v": 234.50000000000003}, {"name": "코멧 자작나무 1,050개", "sub": "5,810원", "v": 553.3333333333334}, {"name": "파인듀 나선형 800개", "sub": "6,950원", "v": 868.75}, {"name": "올웨일리 400개", "sub": "5,900원", "v": 1475}], "note": "와우회원으로 본 표시가이고, 와우회원이 아니면 다를 수 있어요. 상품 페이지에 정가에서 할인된 값으로 나온 상품도 있어요."}, {"k": "LED 전구", "platform": "cp", "unit": "1개당", "title": "12W, 소켓 E26 표기 상품 4종", "fmt": "won0", "ship": false, "rows": [{"name": "닥터룩스 10개", "sub": "9,900원", "v": 990}, {"name": "비츠온 벌브 3개", "sub": "3,090원", "v": 1030}, {"name": "번개표 4개", "sub": "5,310원", "v": 1327.5}, {"name": "코넬 빛샘 3개 (전구색)", "sub": "5,330원", "v": 1776.6666666666667}], "note": "와우회원으로 본 표시가이고, 와우회원이 아니면 다를 수 있어요. 코넬 빛샘만 볼 모양 전구색이에요."}]};
 var F={won0:function(v){return Math.round(v).toLocaleString('ko-KR')+'원'},won1:function(v){return v.toFixed(1)+'원'}};
 var PL={cp:'쿠팡 상품',nv:'네이버 상품'};
 var D=META.cats.map(function(c){return {k:c.k,unit:c.unit,title:c.title,plat:PL[c.platform]||'',fmt:F[c.fmt]||F.won0,ship:!!c.ship,note:c.note||'',
